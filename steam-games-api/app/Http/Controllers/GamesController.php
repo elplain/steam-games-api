@@ -1,17 +1,24 @@
 <?php
 
+namespace App\Http\Controllers;
+
 use App\Models\Game;
 use Illuminate\Http\Request;
-use App\Http\Resources\GamesResource;
 use Illuminate\Validation\Rule;
 
+class GamesController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $games = Game::with('genres')->get();
-
-        return GamesResource::collection($games);
+        return Game::with('genres')->get();
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -30,14 +37,20 @@ use Illuminate\Validation\Rule;
             $game->genres()->attach($data['genres']);
         }
 
-        return new GamesResource($game->load('genres'));
+        return $game->load('genres');
     }
 
+    /**
+     * Display the specified resource.
+     */
     public function show(Game $game)
     {
-        return new GamesResource($game->load('genres'));
+        return $game->load('genres');
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, Game $game)
     {
         $data = $request->validate([
@@ -61,5 +74,17 @@ use Illuminate\Validation\Rule;
             $game->genres()->sync($data['genres']);
         }
 
-        return new GamesResource($game->load('genres'));
+        return $game->load('genres');
     }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Game $game)
+    {
+        $game->delete();
+
+        return response()->noContent();
+    }
+}
+
