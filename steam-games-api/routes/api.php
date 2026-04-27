@@ -2,10 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Appp\HttpControllers\GameController;
+use App\Http\Controllers\GamesController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route :: apiResource ( ' game s' ,   Games Controller :: class );
+Route :: apiResource ( 'games',GamesController::class );
